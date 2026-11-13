@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SpaceType {
+  DESK
+  MEETING_ROOM
+  PRIVATE_OFFICE
+}
+
+model Space {
+  id           String        @id @default(cuid())
+  name         String
+  description  String
+  type         SpaceType
+  capacity     Int
+  pricePerHour Decimal       @db.Decimal(10, 2)
+  available    Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  reservations Reservation[]
+}
+
+model Reservation {
+  id            String   @id @default(cuid())
+  customerName  String
+  customerEmail String
+  date          DateTime @db.Date
+  startTime     String
+  endTime       String
+  totalPrice    Decimal  @db.Decimal(10, 2)
+  spaceId       String
+  space         Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+
+  @@index([spaceId, date])
+}
