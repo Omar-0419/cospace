@@ -10,6 +10,7 @@ export const createSpaceSchema = z.object({
   description: z.string().trim().min(1, "La descripción es obligatoria."),
   type: spaceTypeSchema,
   capacity: z.coerce.number().int("La capacidad debe ser un entero.").positive("La capacidad debe ser mayor a 0."),
+  imageKey: z.string().trim().min(1, "La imagen es obligatoria."),
   pricePerHour: z.coerce
     .number()
     .positive("El precio por hora debe ser mayor a 0."),
@@ -23,6 +24,7 @@ export const updateSpaceSchema = z
     description: z.string().trim().min(1, "La descripción no puede estar vacía.").optional(),
     type: spaceTypeSchema.optional(),
     capacity: z.coerce.number().int("La capacidad debe ser un entero.").positive("La capacidad debe ser mayor a 0.").optional(),
+    imageKey: z.string().trim().min(1, "La imagen no puede estar vacía.").optional(),
     pricePerHour: z.coerce.number().positive("El precio por hora debe ser mayor a 0.").optional(),
     available: z.boolean().optional(),
   })

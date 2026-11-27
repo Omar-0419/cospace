@@ -42,6 +42,7 @@ export type SpaceMinAggregateOutputType = {
   description: string | null
   type: $Enums.SpaceType | null
   capacity: number | null
+  imageKey: string | null
   pricePerHour: runtime.Decimal | null
   available: boolean | null
   createdAt: Date | null
@@ -53,6 +54,7 @@ export type SpaceMaxAggregateOutputType = {
   description: string | null
   type: $Enums.SpaceType | null
   capacity: number | null
+  imageKey: string | null
   pricePerHour: runtime.Decimal | null
   available: boolean | null
   createdAt: Date | null
@@ -64,6 +66,7 @@ export type SpaceCountAggregateOutputType = {
   description: number
   type: number
   capacity: number
+  imageKey: number
   pricePerHour: number
   available: number
   createdAt: number
@@ -87,6 +90,7 @@ export type SpaceMinAggregateInputType = {
   description?: true
   type?: true
   capacity?: true
+  imageKey?: true
   pricePerHour?: true
   available?: true
   createdAt?: true
@@ -98,6 +102,7 @@ export type SpaceMaxAggregateInputType = {
   description?: true
   type?: true
   capacity?: true
+  imageKey?: true
   pricePerHour?: true
   available?: true
   createdAt?: true
@@ -109,6 +114,7 @@ export type SpaceCountAggregateInputType = {
   description?: true
   type?: true
   capacity?: true
+  imageKey?: true
   pricePerHour?: true
   available?: true
   createdAt?: true
@@ -207,6 +213,7 @@ export type SpaceGroupByOutputType = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey: string | null
   pricePerHour: runtime.Decimal
   available: boolean
   createdAt: Date
@@ -241,6 +248,7 @@ export type SpaceWhereInput = {
   description?: Prisma.StringFilter<"Space"> | string
   type?: Prisma.EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
   capacity?: Prisma.IntFilter<"Space"> | number
+  imageKey?: Prisma.StringNullableFilter<"Space"> | string | null
   pricePerHour?: Prisma.DecimalFilter<"Space"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFilter<"Space"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Space"> | Date | string
@@ -253,6 +261,7 @@ export type SpaceOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  imageKey?: Prisma.SortOrderInput | Prisma.SortOrder
   pricePerHour?: Prisma.SortOrder
   available?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -268,6 +277,7 @@ export type SpaceWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Space"> | string
   type?: Prisma.EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
   capacity?: Prisma.IntFilter<"Space"> | number
+  imageKey?: Prisma.StringNullableFilter<"Space"> | string | null
   pricePerHour?: Prisma.DecimalFilter<"Space"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFilter<"Space"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Space"> | Date | string
@@ -280,6 +290,7 @@ export type SpaceOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  imageKey?: Prisma.SortOrderInput | Prisma.SortOrder
   pricePerHour?: Prisma.SortOrder
   available?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -299,6 +310,7 @@ export type SpaceScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Space"> | string
   type?: Prisma.EnumSpaceTypeWithAggregatesFilter<"Space"> | $Enums.SpaceType
   capacity?: Prisma.IntWithAggregatesFilter<"Space"> | number
+  imageKey?: Prisma.StringNullableWithAggregatesFilter<"Space"> | string | null
   pricePerHour?: Prisma.DecimalWithAggregatesFilter<"Space"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolWithAggregatesFilter<"Space"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Space"> | Date | string
@@ -310,6 +322,7 @@ export type SpaceCreateInput = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey?: string | null
   pricePerHour: runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: boolean
   createdAt?: Date | string
@@ -322,6 +335,7 @@ export type SpaceUncheckedCreateInput = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey?: string | null
   pricePerHour: runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: boolean
   createdAt?: Date | string
@@ -334,6 +348,7 @@ export type SpaceUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -346,6 +361,7 @@ export type SpaceUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -358,6 +374,7 @@ export type SpaceCreateManyInput = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey?: string | null
   pricePerHour: runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: boolean
   createdAt?: Date | string
@@ -369,6 +386,7 @@ export type SpaceUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -380,6 +398,7 @@ export type SpaceUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -391,6 +410,7 @@ export type SpaceCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  imageKey?: Prisma.SortOrder
   pricePerHour?: Prisma.SortOrder
   available?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -407,6 +427,7 @@ export type SpaceMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  imageKey?: Prisma.SortOrder
   pricePerHour?: Prisma.SortOrder
   available?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,6 +439,7 @@ export type SpaceMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  imageKey?: Prisma.SortOrder
   pricePerHour?: Prisma.SortOrder
   available?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -447,6 +469,10 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type DecimalFieldUpdateOperationsInput = {
@@ -485,6 +511,7 @@ export type SpaceCreateWithoutReservationsInput = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey?: string | null
   pricePerHour: runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: boolean
   createdAt?: Date | string
@@ -496,6 +523,7 @@ export type SpaceUncheckedCreateWithoutReservationsInput = {
   description: string
   type: $Enums.SpaceType
   capacity: number
+  imageKey?: string | null
   pricePerHour: runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: boolean
   createdAt?: Date | string
@@ -523,6 +551,7 @@ export type SpaceUpdateWithoutReservationsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -534,6 +563,7 @@ export type SpaceUncheckedUpdateWithoutReservationsInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pricePerHour?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -576,6 +606,7 @@ export type SpaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   description?: boolean
   type?: boolean
   capacity?: boolean
+  imageKey?: boolean
   pricePerHour?: boolean
   available?: boolean
   createdAt?: boolean
@@ -589,6 +620,7 @@ export type SpaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   type?: boolean
   capacity?: boolean
+  imageKey?: boolean
   pricePerHour?: boolean
   available?: boolean
   createdAt?: boolean
@@ -600,6 +632,7 @@ export type SpaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   type?: boolean
   capacity?: boolean
+  imageKey?: boolean
   pricePerHour?: boolean
   available?: boolean
   createdAt?: boolean
@@ -611,12 +644,13 @@ export type SpaceSelectScalar = {
   description?: boolean
   type?: boolean
   capacity?: boolean
+  imageKey?: boolean
   pricePerHour?: boolean
   available?: boolean
   createdAt?: boolean
 }
 
-export type SpaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "type" | "capacity" | "pricePerHour" | "available" | "createdAt", ExtArgs["result"]["space"]>
+export type SpaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "type" | "capacity" | "imageKey" | "pricePerHour" | "available" | "createdAt", ExtArgs["result"]["space"]>
 export type SpaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reservations?: boolean | Prisma.Space$reservationsArgs<ExtArgs>
   _count?: boolean | Prisma.SpaceCountOutputTypeDefaultArgs<ExtArgs>
@@ -635,6 +669,7 @@ export type $SpacePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     description: string
     type: $Enums.SpaceType
     capacity: number
+    imageKey: string | null
     pricePerHour: runtime.Decimal
     available: boolean
     createdAt: Date
@@ -1067,6 +1102,7 @@ export interface SpaceFieldRefs {
   readonly description: Prisma.FieldRef<"Space", 'String'>
   readonly type: Prisma.FieldRef<"Space", 'SpaceType'>
   readonly capacity: Prisma.FieldRef<"Space", 'Int'>
+  readonly imageKey: Prisma.FieldRef<"Space", 'String'>
   readonly pricePerHour: Prisma.FieldRef<"Space", 'Decimal'>
   readonly available: Prisma.FieldRef<"Space", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Space", 'DateTime'>

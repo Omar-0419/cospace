@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { updateSpaceSchema } from "@/lib/validations";
@@ -14,6 +15,7 @@ function serializeSpace(space: {
   capacity: number;
   pricePerHour: unknown;
   available: boolean;
+  imageKey: string | null;
   createdAt: Date;
 }) {
   return {
@@ -29,12 +31,16 @@ export async function GET(_request: Request, context: RouteContext) {
     const space = await prisma.space.findUnique({ where: { id } });
 
     if (!space) {
-      return NextResponse.json({ error: "Espacio no encontrado." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Espacio no encontrado." },
+        { status: 404 },
+      );
     }
 
     return NextResponse.json(serializeSpace(space));
   } catch (error) {
     console.error("Error al obtener espacio:", error);
+
     return NextResponse.json(
       { error: "Error interno al obtener el espacio." },
       { status: 500 },
@@ -51,14 +57,21 @@ export async function PATCH(request: Request, context: RouteContext) {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Datos inválidos.", details: parsed.error.flatten().fieldErrors },
+        {
+          error: "Datos inválidos.",
+          details: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 },
       );
     }
 
     const existing = await prisma.space.findUnique({ where: { id } });
+
     if (!existing) {
-      return NextResponse.json({ error: "Espacio no encontrado." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Espacio no encontrado." },
+        { status: 404 },
+      );
     }
 
     const updated = await prisma.space.update({
@@ -69,6 +82,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     return NextResponse.json(serializeSpace(updated));
   } catch (error) {
     console.error("Error al actualizar espacio:", error);
+
     return NextResponse.json(
       { error: "Error interno al actualizar el espacio." },
       { status: 500 },
@@ -82,14 +96,22 @@ export async function DELETE(_request: Request, context: RouteContext) {
     const { id } = await context.params;
 
     const existing = await prisma.space.findUnique({ where: { id } });
+
     if (!existing) {
-      return NextResponse.json({ error: "Espacio no encontrado." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Espacio no encontrado." },
+        { status: 404 },
+      );
     }
 
     await prisma.space.delete({ where: { id } });
-    return NextResponse.json({ message: "Espacio eliminado correctamente." });
+
+    return NextResponse.json({
+      message: "Espacio eliminado correctamente.",
+    });
   } catch (error) {
-    console.error("Error al eliminar espacio:", error);
+    console.error("Error al eliminar el espacio:", error);
+
     return NextResponse.json(
       { error: "Error interno al eliminar el espacio." },
       { status: 500 },

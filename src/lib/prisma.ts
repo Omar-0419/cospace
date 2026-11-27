@@ -15,16 +15,38 @@ function createPrismaClient() {
     throw new Error("DATABASE_URL no está definida.");
   }
 
-  // Quitamos sslmode de la URL para evitar que pg reemplace
-  // la configuración SSL que definimos explícitamente.
   const databaseUrl = new URL(connectionString);
-  databaseUrl.searchParams.delete("sslmode");
 
-  // Certificados oficiales de Amazon RDS.
-  const ca = readFileSync(
-    join(process.cwd(), "certs", "global-bundle.pem"),
-    "utf8"
-  );
+  // Evitamos que los parámetros SSL de la URL
+  // sobrescriban nuestra configuración del adapter.
+  databaseUrl.searchParams.delete("sslmode");
+  databaseUrl.searchParams.delete("sslrootcert");
+
+  const hostname = databaseUrl.hostname;
+
+  let certificatePath: string;
+
+  if (hostname.endsWith(".rds.amazonaws.com")) {
+    // Producción: certificado oficial de AWS RDS.
+    certificatePath = join(
+      process.cwd(),
+      "certs",
+      "global-bundle.pem"
+    );
+  } else if (hostname.endsWith(".pooler.supabase.com")) {
+    // Desarrollo: certificado raíz de Supabase.
+    certificatePath = join(
+      process.cwd(),
+      "certs",
+      "supabase-ca.crt"
+    );
+  } else {
+    throw new Error(
+      `Proveedor de base de datos no reconocido: ${hostname}`
+    );
+  }
+
+  const ca = readFileSync(certificatePath, "utf8");
 
   const adapter = new PrismaPg({
     connectionString: databaseUrl.toString(),

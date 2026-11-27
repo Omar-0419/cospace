@@ -1,8 +1,9 @@
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { createSpaceSchema } from "@/lib/validations";
 
-// Convierte el espacio de Prisma a un objeto JSON serializable (Decimal -> number).
+// Convierte el espacio de Prisma a un objeto JSON serializable.
 function serializeSpace(space: {
   id: string;
   name: string;
@@ -11,6 +12,7 @@ function serializeSpace(space: {
   capacity: number;
   pricePerHour: unknown;
   available: boolean;
+  imageKey: string | null;
   createdAt: Date;
 }) {
   return {
@@ -25,9 +27,11 @@ export async function GET() {
     const spaces = await prisma.space.findMany({
       orderBy: { createdAt: "desc" },
     });
+
     return NextResponse.json(spaces.map(serializeSpace));
   } catch (error) {
     console.error("Error al listar espacios:", error);
+
     return NextResponse.json(
       { error: "Error interno al obtener los espacios." },
       { status: 500 },
@@ -43,7 +47,10 @@ export async function POST(request: Request) {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Datos inválidos.", details: parsed.error.flatten().fieldErrors },
+        {
+          error: "Datos inválidos.",
+          details: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 },
       );
     }
@@ -55,6 +62,7 @@ export async function POST(request: Request) {
     return NextResponse.json(serializeSpace(space), { status: 201 });
   } catch (error) {
     console.error("Error al crear espacio:", error);
+
     return NextResponse.json(
       { error: "Error interno al crear el espacio." },
       { status: 500 },
