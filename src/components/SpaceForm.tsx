@@ -49,28 +49,28 @@ export function SpaceForm({
   const [imageError, setImageError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!image) {
-      setPreview(null);
-      return;
-    }
-
-    const url = URL.createObjectURL(image);
-    setPreview(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [image]);
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
 
     setImageError(null);
-    setImage(file ?? null);
 
-    if (!file) return;
+    if (!file) {
+      setImage(null);
+      setPreview(null);
+      return;
+    }
 
     if (!ALLOWED_TYPES.includes(file.type)) {
       setImageError("Formato no permitido. Usa JPG, PNG o WEBP.");
       setImage(null);
+      setPreview(null);
       e.target.value = "";
       return;
     }
@@ -78,8 +78,13 @@ export function SpaceForm({
     if (file.size > MAX_SIZE) {
       setImageError("La imagen no puede superar los 5 MB.");
       setImage(null);
+      setPreview(null);
       e.target.value = "";
+      return;
     }
+
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
   }
 
   async function handleSubmit(e: React.FormEvent) {

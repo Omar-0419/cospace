@@ -23,8 +23,6 @@ export function AdminSpacesClient() {
   const [editing, setEditing] = useState<Space | null>(null);
 
   async function load() {
-    setLoading(true);
-
     try {
       const res = await fetch("/api/spaces");
       const data = await res.json();
@@ -40,7 +38,37 @@ export function AdminSpacesClient() {
   }
 
   useEffect(() => {
-    void load();
+    const controller = new AbortController();
+
+    async function initialLoad() {
+      try {
+        const res = await fetch("/api/spaces", {
+          signal: controller.signal,
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Error al cargar espacios");
+        }
+
+        setSpaces(data);
+      } catch (e: unknown) {
+        if (e instanceof Error && e.name === "AbortError") return;
+
+        setError(
+          e instanceof Error ? e.message : "Error al cargar espacios"
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void initialLoad();
+
+    return () => controller.abort();
   }, []);
 
   async function uploadImage(image: File): Promise<string> {
@@ -220,11 +248,10 @@ export function AdminSpacesClient() {
 
                     <td className="px-4 py-3">
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                          s.available
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.available
                             ? "bg-green-100 text-green-700"
                             : "bg-gray-200 text-gray-600"
-                        }`}
+                          }`}
                       >
                         {s.available ? "Disponible" : "No disponible"}
                       </span>
