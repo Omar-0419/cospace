@@ -24,36 +24,47 @@ function createPrismaClient() {
 
   const hostname = databaseUrl.hostname;
 
-  let certificatePath: string;
+  let sslConfig: { ca: string; rejectUnauthorized: boolean } | undefined;
 
   if (hostname.endsWith(".rds.amazonaws.com")) {
     // Producción: certificado oficial de AWS RDS.
-    certificatePath = join(
+    const certificatePath = join(
       process.cwd(),
       "certs",
       "global-bundle.pem"
     );
+
+    sslConfig = {
+      ca: readFileSync(certificatePath, "utf8"),
+      rejectUnauthorized: true,
+    };
   } else if (hostname.endsWith(".pooler.supabase.com")) {
     // Desarrollo: certificado raíz de Supabase.
-    certificatePath = join(
+    const certificatePath = join(
       process.cwd(),
       "certs",
       "supabase-ca.crt"
     );
+
+    sslConfig = {
+      ca: readFileSync(certificatePath, "utf8"),
+      rejectUnauthorized: true,
+    };
+  } else if (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1"
+  ) {
+    // CI o PostgreSQL local: conexión sin SSL.
+    sslConfig = undefined;
   } else {
     throw new Error(
       `Proveedor de base de datos no reconocido: ${hostname}`
     );
   }
 
-  const ca = readFileSync(certificatePath, "utf8");
-
   const adapter = new PrismaPg({
     connectionString: databaseUrl.toString(),
-    ssl: {
-      ca,
-      rejectUnauthorized: true,
-    },
+    ...(sslConfig ? { ssl: sslConfig } : {}),
   });
 
   return new PrismaClient({ adapter });
